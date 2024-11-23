@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 function MutasiRek() {
   const [transaksi, setTransaksi] = useState([]);
@@ -68,7 +69,7 @@ function MutasiRek() {
 
     if (periode === "last") {
       // Tampilkan transaksi terakhir
-      setFilteredTransaksi([transaksi[transaksi.length - 1]]);
+      setFilteredTransaksi([transaksi[0]]);
       return;
     } else if (periode === "week") {
       // Seminggu terakhir
@@ -93,10 +94,11 @@ function MutasiRek() {
     const rows = filteredTransaksi.map((item) => [
       item.keterangan,
       formatTanggal(item.tanggal),
-      item.nominal,
-      item.saldo,
+      `Rp. ${Number(item.nominal).toLocaleString("id-ID")},00`,
+      `Rp. ${Number(item.saldo).toLocaleString("id-ID")},00`,
     ]);
 
+    // Menggunakan autoTable dari jsPDF
     doc.autoTable({
       head: [headers],
       body: rows,
@@ -169,6 +171,7 @@ function MutasiRek() {
                 <th>Tanggal</th>
                 <th>Nominal</th>
                 <th>Saldo</th>
+                <th>Keterangan Detail</th>
               </tr>
             </thead>
             <tbody>
@@ -176,8 +179,9 @@ function MutasiRek() {
                 <tr key={item.id}>
                   <td>{item.keterangan}</td>
                   <td>{formatTanggal(item.tanggal)}</td>
-                  <td>{item.nominal}</td>
-                  <td>{item.saldo}</td>
+                  <td>Rp. {Number(item.nominal).toLocaleString("id-ID")},00</td>
+                  <td>Rp. {Number(item.saldo).toLocaleString("id-ID")},00</td>
+                  <td>{item.KeteranganDetail}</td>
                 </tr>
               ))}
             </tbody>

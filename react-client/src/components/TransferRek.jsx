@@ -6,6 +6,8 @@ function TransferRek() {
     keterangan: "",
     nominal: "",
     tanggal: "",
+    rekeningtujuan: "",
+    rekeningdebit: "",
   });
 
   const handleChange = (e) => {
@@ -16,6 +18,13 @@ function TransferRek() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log("Data yang dikirim:", {
+      keterangan: formData.keterangan,
+      nominal: formData.nominal,
+      rekeningDebit: formData.rekeningdebit,
+      rekeningTujuan: formData.rekeningtujuan,
+    });
+
     try {
       const response = await fetch("http://localhost:5000/transaksi", {
         method: "POST",
@@ -23,6 +32,8 @@ function TransferRek() {
         body: JSON.stringify({
           keterangan: formData.keterangan,
           nominal: formData.nominal,
+          rekeningDebit: formData.rekeningdebit,
+          rekeningTujuan: formData.rekeningtujuan,
         }),
       });
 
@@ -89,7 +100,7 @@ function TransferRek() {
           >
             <option value="">Pilih Keterangan</option>
             <option value="Setor">Setor</option>
-            <option value="Tarik">Tarik</option>
+            <option value="Transfer">Transfer</option>
           </select>
         </label>
         <br />
